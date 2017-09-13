@@ -295,7 +295,7 @@ di sebuah `landing page`
     {'subject' : 'Birth Date', 'value' : birth_date.strftime('%d %B %Y')},\
     {'subject' : 'Sex', 'value' : ''}]
     
-    def index_addon(request):
+    def index(request):
         response = {}
         return render(request, 'description_lab2addon.html', response)
 ```
