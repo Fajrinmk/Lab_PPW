@@ -33,10 +33,15 @@ body, html {
       background-size: cover;
       position: relative;
   }
+  img {
+    border-radius: 50%;
+  }
 
 </style>
 <div class="img">
   <div class="text">
+    {% load static %}
+    <center><img src="{% static "images/fajrin.jpg" %}" width="200" height="200"></center>
     <h1 style="font-size:50px; font-family:Trebuchet MS">Hello, this is {{ name }}.</h1>
     <p> {{ content }}.</p>
   </div>
