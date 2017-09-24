@@ -7,7 +7,7 @@ from .models import Message
 
 # Create your views here.
 response = {'author': "Fajrin Maulana K"} #TODO Implement yourname
-about_me = ["fajrin","fajrin","fajrin","fajrin","fajrin","fajrin"]
+about_me = ["fajrin","ganteng","suka","main","olahraga","voli"]
 def index(request):
     response['content'] = landing_page_content
     html = 'lab_4/lab_4.html'
@@ -29,5 +29,12 @@ def message_post(request):
         return render(request, html, response)
     else:        
         return HttpResponseRedirect('/lab-4/')
+
+def message_table(request):
+    message = Message.objects.all()
+    response['message'] = message
+    html = 'lab_4/table.html'
+    return render(request, html , response)
+
 
 
