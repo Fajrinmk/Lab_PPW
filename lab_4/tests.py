@@ -4,7 +4,7 @@ from django.urls import resolve
 from django.http import HttpRequest
 from .forms import Message_Form
 from .models import Message
-from .views import index, about_me, landing_page_content
+from .views import index, about_me, landing_page_content, message_post
 from lab_1.views import mhs_name
 # Create your tests here.
 
@@ -53,5 +53,19 @@ class Lab4UnitTest(TestCase):
         self.assertEqual(
             form.errors['message'],
             ["This field is required."]
-        )  
+        )
+
+    def test_lab4_post_fail(self):
+        response = Client().post('/lab-4/add_message', {'name': 'Anonymous', 'email': 'A', 'message': ''})
+        self.assertEqual(response.status_code, 302)
+
+    def test_lab4_post_success_and_render_the_result(self):
+        anonymous = 'Anonymous'
+        message = 'HaiHai'
+        response = Client().post('/lab-4/add_message', {'name': '', 'email': '', 'message': message})
+        self.assertEqual(response.status_code, 200)
+        html_response = response.content.decode('utf8')
+        self.assertIn(anonymous,html_response)
+        self.assertIn(message,html_response)
+  
    
