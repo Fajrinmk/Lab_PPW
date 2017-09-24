@@ -2,7 +2,10 @@ from django.test import TestCase
 from django.test import Client
 from django.urls import resolve
 from django.http import HttpRequest
+from .forms import Message_Form
+from .models import Message
 from .views import index, about_me, landing_page_content
+from lab_1.views import mhs_name
 # Create your tests here.
 
 class Lab4UnitTest(TestCase):
