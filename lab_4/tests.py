@@ -35,6 +35,7 @@ class Lab4UnitTest(TestCase):
     def test_model_can_create_new_message(self):
             #Creating a new activity
             new_activity = Message.objects.create(name=mhs_name,email='test@gmail.com',message='This is a test')
+            self.assertEqual(str(new_activity),new_activity.message)
 
             #Retrieving all available activity
             counting_all_available_message= Message.objects.all().count()
