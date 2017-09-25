@@ -13,8 +13,19 @@
         {% block title %} Lab 4 By {{author}}{% endblock %}
     </title>
 </head>
+<style>
+    .backgrounder{
+        background-image: url("https://image.ibb.co/mBubdk/marvel.png");
+        height: 92%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+    
+</style>
 
-<body>
+<body class="backgrounder">
     <header>
         {% include "lab_4/partials/header.html" %}
     </header>
