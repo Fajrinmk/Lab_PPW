@@ -25,6 +25,15 @@
         background-size: cover;
         
     }
+    #footer{
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        text-align: center;
+        width: 100%;
+        z-index: -1;
+        background:#fff
+    }
     
 </style>
 
@@ -40,15 +49,17 @@
         </div>
 
     </content>
-    <footer>
+    <footer id="footer">
         <!-- TODO Block Footer dan include footer.html -->
         {% block footer %}
         {% include "lab_4/partials/footer.html" %}
         {% endblock %}
     </footer>
 
+
     <!-- Jquery n Bootstrap Script -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="application/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
+
 </html>
