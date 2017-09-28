@@ -94,3 +94,5 @@ class Lab5FunctionalTest(TestCase):
         # submitting the form
         submit.send_keys(Keys.RETURN)
 
+        self.assertIn('Mengerjakan Lab PPW', selenium.page_source)
+
