@@ -1,7 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
+from django.contrib import messages
+from django.views.generic import DeleteView
+from django.urls import reverse_lazy
 from .forms import Todo_Form
 from .models import Todo
+from lab_1.views import mhs_name
+
 
 # Create your views here.
 response = {}
@@ -23,3 +28,9 @@ def add_todo(request):
         return HttpResponseRedirect('/lab-5/')
     else:
         return HttpResponseRedirect('/lab-5/')
+
+def delete_todo(request, object_id=None):
+    obj = get_object_or_404(Todo, pk=object_id)
+    obj.delete()
+    return HttpResponseRedirect('/lab-5/')
+

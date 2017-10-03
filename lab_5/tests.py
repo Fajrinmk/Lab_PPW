@@ -1,7 +1,8 @@
 from django.test import TestCase
 from django.test import Client
 from django.urls import resolve
-from .views import index, add_todo
+from django.http import HttpRequest
+from .views import index, add_todo, delete_todo
 from .models import Todo
 from .forms import Todo_Form
 from selenium import webdriver
@@ -96,3 +97,12 @@ class Lab5FunctionalTest(TestCase):
 
         self.assertIn('Mengerjakan Lab PPW', selenium.page_source)
 
+    def test_lab5_post_delete(self):
+        test = 'delete anonymous'
+        request = HttpRequest()
+        new_activity = Todo.objects.create(title=test, description='mengerjakan lab_5 ppw')
+        delete_todo(request, object_id=new_activity.id)
+
+        respone = Client().get('/lab-5/')
+        html_response = respone.content.decode('utf-8')
+        self.assertNotIn(test, html_response)
