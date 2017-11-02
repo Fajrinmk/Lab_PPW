@@ -22,6 +22,7 @@ import lab_3.urls as lab_3
 import lab_2_addon.urls as lab_2_addon
 import lab_4.urls as lab_4
 import lab_5.urls as lab_5
+import lab_6.urls as lab_6
 
 from lab_1.views import index as index_lab1
 
@@ -35,5 +36,6 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(url='lab-4/', permanent = True), name='$'),
     url(r'^lab-4/', include(lab_4, namespace='lab-4')),
     url(r'^lab-5/', include(lab_5, namespace='lab-5')),
+    url(r'^lab-6/', include(lab_6, namespace='lab-6')),
 
 ]
