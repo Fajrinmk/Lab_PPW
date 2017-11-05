@@ -12,6 +12,8 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/lab_6.css' %}" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
+
     <title>
         {% block title %} Lab 6 By {{author}} {% endblock %}
     </title>
@@ -21,12 +23,16 @@
         {% include "lab_6/partials/header.html" %}
     </header>
     <content>
+    <select class="my-select"></select>
+    <button class="apply-button">apply</button>
             {% block content %}
                 <!-- content goes here -->
             {% endblock %}
               <!-- Calculator Section -->
   <section class="calculator">
     <div class="container">
+   
+
         <div class="model col-lg-5">
             <div class="container-fluid">
                 <div class="row" id="title">
@@ -87,5 +93,6 @@
     <!-- Jquery n Bootstrap Script -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="application/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
     <script src="{% static 'js/lab_6.js' %}"></script>
 </body>
