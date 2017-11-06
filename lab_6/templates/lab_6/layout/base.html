@@ -9,6 +9,7 @@
     <meta name="description" content="LAB 5">
     <meta name="author" content="{{author}}">
     <!-- bootstrap csss -->
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.4.1.css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/lab_6.css' %}" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700">
@@ -19,6 +20,7 @@
     </title>
 </head>
 <body>
+    <div id="qunit"></div>
     <header>
         {% include "lab_6/partials/header.html" %}
     </header>
@@ -95,4 +97,5 @@
     <script type="application/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
     <script src="{% static 'js/lab_6.js' %}"></script>
+    <script src="https://code.jquery.com/qunit/qunit-2.4.1.js"></script>
 </body>
