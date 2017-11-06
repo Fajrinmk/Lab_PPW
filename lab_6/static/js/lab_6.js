@@ -50,9 +50,16 @@ $(document).ready(function() {
 var chathead = document.getElementsByClassName('chat-head');
 var chatbody = document.getElementsByClassName('chat-body');
 
-$(chathead).click(function(){
-    $(chatbody).toggle();
+$(chathead).ready(function(){
+    $("img").on('click', function(){
+    	$(chatbody).toggle();
+        var src = ($(this).attr("src") === "https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_down-16.png")
+            ? "https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_up-16.png" 
+            : "https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_down-16.png";
+  	$(this).attr("src", src);
+    })
 });
+
 
 
 // END
