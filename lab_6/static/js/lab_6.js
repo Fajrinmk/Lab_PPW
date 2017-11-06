@@ -46,5 +46,13 @@ $(document).ready(function() {
     })
 });
 
+//Toggle chatbox
+var chathead = document.getElementsByClassName('chat-head');
+var chatbody = document.getElementsByClassName('chat-body');
+
+$(chathead).click(function(){
+    $(chatbody).toggle();
+});
+
 
 // END
