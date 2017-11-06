@@ -38,7 +38,7 @@ changeTheme(theme);
 
 
 $(document).ready(function() {
-    $('.my-select').select2({'data' : localStorage.getItem('themes')}).val(theme['id']).change();
+    $('.my-select').select2({'data' : JSON.parse(localStorage.getItem('themes'))}).val(theme['id']).change();
     $('.apply-button').on('click', function(){
         theme = themes[$('.my-select').val()];
         changeTheme(theme);
