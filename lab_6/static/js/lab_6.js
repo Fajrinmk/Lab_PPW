@@ -9,7 +9,22 @@ var go = function(x) {
   } else if (x === 'eval') {
       print.value = Math.round(evil(print.value) * 10000) / 10000;
       erase = true;
-  } else if (erase === true) {
+  } else if (x === 'log' || x ==='sin' || x === 'tan') {
+    switch (x) {
+      case 'log':
+        print.value = Math.log10(print.value);
+        erase = true;
+        break;
+      case 'sin':
+        print.value = Math.sin(print.value);
+        erase = true;
+        break;
+      case 'tan':
+        print.value = Math.sin(print.value);
+        erase = true;
+        break;
+    }
+  }	else if (erase === true) {
         print.value = x;
         erase = false;
   } else {
@@ -47,12 +62,9 @@ $(document).ready(function() {
 });
 
 //Toggle chatbox
-var chathead = document.getElementsByClassName('chat-head');
-var chatbody = document.getElementsByClassName('chat-body');
-
-$(chathead).ready(function(){
+$('.chat-head').ready(function(){
     $("img").on('click', function(){
-    	$(chatbody).toggle();
+    	$('.chat-body').toggle();
         var src = ($(this).attr("src") === "https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_down-16.png")
             ? "https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_up-16.png" 
             : "https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_down-16.png";
