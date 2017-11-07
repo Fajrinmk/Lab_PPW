@@ -45,3 +45,38 @@ $( document ).ready(function() {
       assert.equal( $('#print').val(), 2, "8 / 4 must be 2" );
       button_clear.click();
     });
+
+        var button_5 = $('button:contains("5")');
+    var button_3 = $('button:contains("3")');
+    var button_1 = $('button:contains("1")');
+    var button_0 = $('button:contains("0")');
+    var button_sin = $('button:contains("sin")');
+    var button_tan = $('button:contains("tan")');
+    var button_log = $('button:contains("log")');
+
+    QUnit.test( "Sin Test", function( assert ) {
+      button_3.click();
+      button_0.click();
+      button_sin.click();
+      assert.equal( $('#print').val(), -0.9880316240928618, "30 rad to sin must be -0.9880316240928618" );
+      button_clear.click();
+    });
+
+    QUnit.test( "Tan Test", function( assert ) {
+      button_4.click();
+      button_5.click();
+      button_tan.click();
+      assert.equal( $('#print').val(), 1.6197751905438615, "45 rad to tan must be 1.6197751905438615" );
+      button_clear.click();
+    });
+
+    QUnit.test( "Log Test", function( assert ) {
+      button_1.click();
+      button_0.click();
+      button_0.click();
+      button_0.click();
+      button_log.click();
+      assert.equal( $('#print').val(), 3, "log 1000 must be 3" );
+      button_clear.click();
+    });
+});

@@ -20,7 +20,7 @@ var go = function(x) {
         erase = true;
         break;
       case 'tan':
-        print.value = Math.sin(print.value);
+        print.value = Math.tan(print.value);
         erase = true;
         break;
     }
