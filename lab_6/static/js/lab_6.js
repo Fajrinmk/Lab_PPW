@@ -64,12 +64,34 @@ $(document).ready(function() {
 //Toggle chatbox
 $('.chat-head').ready(function(){
     $("img").on('click', function(){
-    	$('.chat-body').toggle();
+    	$('.chat-body').toggle(500);
         var src = ($(this).attr("src") === "https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_down-16.png")
             ? "https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_up-16.png" 
             : "https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_down-16.png";
   	$(this).attr("src", src);
     })
 });
+
+//enter2 di chatbox
+var sender = true;
+
+$('textarea').keypress(function(e){
+    if(e.keyCode == 13 && !e.shiftKey) {
+        var c = String.fromCharCode(e.which);
+        var textValue = $('textarea').val();
+        var fulltext = textValue + c;
+        e.preventDefault();
+        $('textarea').val('');
+
+        if(sender){
+            $('.msg-insert').append('<div class="msg-send">' + fulltext + '</div>');
+            sender = false;
+        }else{
+            $('.msg-insert').append('<div class="msg-receive">' + fulltext + '</div>');
+            sender = true;
+        } 
+    }
+});
+
 
 // END
