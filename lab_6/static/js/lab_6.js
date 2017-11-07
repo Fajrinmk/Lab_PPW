@@ -72,6 +72,4 @@ $('.chat-head').ready(function(){
     })
 });
 
-
-
 // END
