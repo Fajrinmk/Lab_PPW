@@ -157,4 +157,5 @@ db.sqlite3
 chromedriver
 chromedriver.exe
 /pratikum/static/*
+sso.env
 

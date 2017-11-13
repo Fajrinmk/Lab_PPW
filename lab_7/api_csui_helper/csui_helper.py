@@ -4,7 +4,7 @@ import environ
 
 root = environ.Path(__file__) - 3 # three folder back (/a/b/c/ - 3 = /)
 env = environ.Env(DEBUG=(bool, False),)
-environ.Env.read_env('.env')
+environ.Env.read_env('sso.env')
 API_MAHASISWA_LIST_URL = "https://api.cs.ui.ac.id/siakngcs/mahasiswa-list/"
 
 class CSUIhelper:
