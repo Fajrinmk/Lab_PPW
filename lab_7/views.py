@@ -23,10 +23,19 @@ def index(request):
     return render(request, html, response)
 
 def friend_list(request):
-    friend_list = Friend.objects.all()
-    response['friend_list'] = friend_list
     html = 'lab_7/daftar_teman.html'
+    response['friend_list'] = Friend.objects.all().order_by('npm')
     return render(request, html, response)
+
+def get_friend_list(request):
+    if(request.method == 'GET'):
+        friend_list = []
+        for i in Friend.objects.all().order_by('npm'):
+            friend_list.append(model_to_dict(i))
+
+        return JsonResponse({'status_code':200, 'friends':friend_list})
+    raise Http404
+    
 
 @csrf_exempt
 def add_friend(request):
