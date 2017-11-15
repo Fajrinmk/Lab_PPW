@@ -83,7 +83,7 @@
         npm = $(this).val();
         $.ajax({
             method: "POST",
-            url: '{% url "lab-7:validate-npm" %}',
+            url: '{% url "lab-7:validate-npm" %}' ,
             data: {
                 'npm': npm
             },
@@ -96,5 +96,6 @@
             }
         });
     });
+
 </script>
 {% endblock %}

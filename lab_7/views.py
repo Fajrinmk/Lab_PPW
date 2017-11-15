@@ -55,7 +55,7 @@ def delete_friend(request, friend_id):
 def validate_npm(request):
     npm = request.POST.get('npm', None)
     data = {
-        'is_taken': True #lakukan pengecekan apakah Friend dgn npm tsb sudah ada
+        'is_taken': Friend.objects.filter(npm=npm).count() > 0 #lakukan pengecekan apakah Friend dgn npm tsb sudah ada
     }
     return JsonResponse(data)
 
