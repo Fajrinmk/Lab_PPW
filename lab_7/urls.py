@@ -5,5 +5,5 @@ urlpatterns = [
     url(r'^add-friend/$', add_friend, name='add-friend'),
     url(r'^validate-npm/$', validate_npm, name='validate-npm'),
     url(r'^friend-list/$', friend_list, name='friend-list'),
-    url(r'^get-friend-data/$', get_friend_list, name='get-friend-data'),
+    url(r'^get-friend-data/$', get_friend_list, name='get-friend-lsit'),
 ]

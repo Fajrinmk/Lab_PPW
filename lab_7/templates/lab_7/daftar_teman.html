@@ -16,7 +16,7 @@
     $(document).ready(function() {
         $.ajax({
             method: 'GET',
-            url: '{% url "lab-7:get-friend-data" %}',
+            url: '{% url "lab-7:get-friend-list" %}',
             success: function(response){
                 lst_friend = response.friends;
                 
