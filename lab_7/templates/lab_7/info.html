@@ -1,0 +1,87 @@
+{% extends "lab_7/layout/base.html" %}
+
+{% block content %}
+<section name="friend-list" class="friend-list">
+    <div class="container">
+        <div class="row">
+        	<div class="col-md-8 col-lg-12">
+        		<h2>{{ friend.friend_name }} </h2>
+        	</div>
+            <div class="col-md-8 col-lg-12">
+                <table width="100%">
+	                <tr>
+	                	<td><h4>NPM</h4></td>
+	                	<td><h4>{{ friend.npm }}</h4></td>
+	                </tr>
+	                <tr>
+	                	<td><h4>Alamat</h4></td>
+	                	<td><h4  id="address">{{ friend.address }}</h4></td>
+	                </tr>
+	                <tr>
+	                	<td><h4>Kode Pos</h4>
+	                	<td><h4>{{ friend.mail_code }}</h4></td>
+	                </tr>
+	                <tr>
+	                	<td><h4>Tempat Lahir</h4></td>
+	                	<td><h4>{{ friend.hometown }}</h4></td>
+                    </tr>
+                    <tr>
+	                	<td><h4>Tanggal Lahir</h4></td>
+	                	<td><h4>{{ friend.birthday }}</h4></td>
+                    </tr>
+                    <tr>
+	                	<td><h4>Program Studi</h4></td>
+	                	<td><h4>{{ friend.program }}</h4></td>
+                    </tr>
+                    <tr>
+	                	<td><h4>Angkatan</h4></td>
+	                	<td><h4>{{ friend.angkatan }}</h4></td>
+            		</tr>
+            	</table>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+    	<div id="googleMap" style="width:1000px; height:500px; margin: 50px 0"></div>
+    </div>
+    <div>
+    </div>
+</section>
+{% endblock %}
+{% block javascript %}
+<script>
+	console.log($("#address").text());
+	var address = $("#address").text();
+	
+	function initMap() {
+		var geocoder = new google.maps.Geocoder();
+		var infowindow = new google.maps.InfoWindow();
+		geocoder.geocode({'address': address}, function(results, status) {
+			if (status === google.maps.GeocoderStatus.OK) {
+				var propertiPeta = {
+					center: results[0].geometry.location,
+					zoom: 16,
+					mapTypeId: google.maps.MapTypeId.HYBRID
+				};
+				var peta = new google.maps.Map(document.getElementById("googleMap"), propertiPeta);
+				var marker = new google.maps.Marker({
+				  map: peta,
+				  position: results[0].geometry.location
+				  
+				});
+
+				google.maps.event.addListener(marker, 'click', function() {
+              	infowindow.setContent('<div><strong>' + results[0].formatted_address + '</strong><br>' +
+                '</div>');
+              	infowindow.open(peta, this);
+            });
+			} else {
+				var html = '<div class="alert alert-danger text-center">\
+                            	Lokasi tidak ditemukan!\
+                            </div>';
+                $("#googleMap").append(html)
+			}
+		});
+	}
+</script>
+{% endblock %}

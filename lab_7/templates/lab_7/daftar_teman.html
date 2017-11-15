@@ -1,45 +1,79 @@
 {% extends "lab_7/layout/base.html" %}
+
 {% block content %}
-<section name="mahasiswa-list" id="mahasiswa-list">
-    <div class="container">
-        <div class="row">
-            <h2> Teman Saya </h2>
-            <div class="list-group" id="friend-list">
-                <!-- data -->
+    <section name="friend-list" id="friend-list">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-lg-8">
+                    <h2> Fasilkom's Friends</h2>
+                    <div id="friend-list" class="list-group">
+
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 {% endblock %}
 {% block javascript %}
-<script>
-    $(document).ready(function() {
-        $.ajax({
-            method: 'GET',
-            url: '{% url "lab-7:get-friend-list" %}',
-            success: function(response){
-                lst_friend = response.friends;
-                
-                for(var i=0; i < lst_friend.length; ++i){
-                    friend = JSON.parse(lst_friend[i]);
-                    html = '<div class="list-group-item" id="friend-'+friend.id+'"> \
-                                <a class="list-group-item clearfix" style="width:100%" href="/lab-7/' + friend.npm +'/">' +
-                                    friend.friend_name + " " + "(" + friend.npm + ")"
-                                + '</a> \
-                                <a class="list-group-item pull-left" onclick="deleteFunc('+friend.id+')">X</a> \
+    <script>
+        $( document ).ready(function () {
+            $.ajax({
+                method: "GET",
+                url: '{% url "lab-7:get-friend-list" %}',
+                success: function (friend_list) {
+                    var friends = JSON.parse(friend_list);
+                    if(friends.length == 0){
+                    
+                        var html = '<div class="alert alert-danger text-center">\
+                                <strong>Opps!</strong> Tidak ada mahasiswa \
                             </div>';
-                    $('#friend-list').append(html);
-                }
-            },
-            error: function(response){
-                html = '<div class="alert alert-danger text-center">\
-                            <strong>Opps!</strong> Tidak ada teman\
-                        </div>';
-                $('#friend-list').append(html);
-            }
-        })
-    })
+                        $("#friend-list").append(html)
+                    }else{
+                        var counter = 0;
+                        $.each(friends,function(index,friend){
+                            var button = '<span class="pull-right">'+
+                                            '<button type="button" class="btn btn-xs btn-danger"'+
+                                            'onClick="deleteFriend('+friend.pk+')">'+
+                                                '&times;'+
+                                            '</button>'+
+                                         '</span>';
+                            var info = '<span class="col-xs-2 col-md-1 pull-right">'+
+                                            '<button type="button" class="btn btn-xs btn-default btn-block"'+
+                                            'onClick="description('+friend.pk+')">'+
+                                                'info'+
+                                            '</button>'+
+                                         '</span>';
+                            
+                            var html;
 
-    
-</script>
+                            if(counter % 2 == 0){
+                                html = '<a class="list-group-item list-group-item-warning text-center">'+
+                                            friend.fields.friend_name +
+                                            ' (' + friend.fields.npm + ')' + button + info + '</a>';
+                            }else if(counter % 2 == 1){
+                                html = '<a class="list-group-item list-group-item-info text-center">'+
+                                            friend.fields.friend_name +
+                                            ' (' + friend.fields.npm + ')' + button + info + '</a>';
+                            }
+
+                            $("#friend-list").append(html)
+                            
+                            counter += 1;
+                        })
+                    }
+                },
+                error: function(error){
+                    alert("Terjadi kesalahan");
+                }
+            });
+        });
+
+        function deleteFriend(id){
+            window.open('delete-friend/'+id+'/', '_self');
+        }
+
+        function description(id){
+            window.open('info/'+id+'/', '_self');
+        }
+    </script>
 {% endblock %}

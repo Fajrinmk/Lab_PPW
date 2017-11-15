@@ -9,9 +9,9 @@
                     {% if mahasiswa_list %}
                         {% for mahasiswa in mahasiswa_list %}
                             <a class="list-group-item clearfix">
-                                {{ mahasiswa.nama }} ({{ mahasiswa.npm }})
+                                {{ mahasiswa.nama }} ({{ mahasiswa.npm }}   )
                                 <span class="pull-right">
-                        <span class="btn btn-xs btn-default" onClick="addFriend('{{ mahasiswa.nama }}', '{{ mahasiswa.npm }}')">
+                        <span class="btn btn-xs btn-default" onClick="addFriend('{{ mahasiswa.nama }}', '{{ mahasiswa.npm }}','{{ mahasiswa.alamat_mhs }}','{{ mahasiswa.kd_pos_mhs }}', '{{ mahasiswa.kota_lahir }}', '{{ mahasiswa.tgl_lahir }}', '{{ mahasiswa.program.0.nm_org}}', '{{ mahasiswa.program.0.angkatan}}')">
                             Tambah sebagai teman
                         </span>
                     </span>
@@ -22,6 +22,26 @@
                             <strong>Opps!</strong> Tidak ada mahasiswa
                         </div>
                     {% endif %}
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if mahasiswa_list.has_previous %}
+                                <a href="?page={{ mahasiswa_list.previous_page_number }}">previous</a>
+                            {% endif %}
+                    
+                            <span class="current">
+                                Page {{ mahasiswa_list.number }} of {{ mahasiswa_list.paginator.num_pages }}.
+                            </span>
+                    
+                            {% if mahasiswa_list.has_next %}
+                                <a href="?page={{ mahasiswa_list.next_page_number }}">next</a>
+                            {% endif %}
+                        </span>
+                        {% if auth %}
+                            <div id="token" hidden="true">{{ auth.access_token }}</div>
+                            <div id="cid" hidden="true">{{ auth.client_id }}</div>
+                        {% endif %}
+    
+                    </div>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -29,7 +49,7 @@
                 <div class="list-group" id="friend-list">
                     {% if friend_list %}
                         {% for friend in friend_list %}
-                            <a class="list-group-item clearfix">
+                            <a class="list-group-item clearfix" id="{{ friend.id }}">
                                 {{ friend.friend_name }} ({{ friend.npm }})
                             </a>
                         {% endfor %}
@@ -51,19 +71,33 @@
         </div>
     </div>
 </section>
+
 {% endblock %}
+
 {% block javascript %}
 <script>
-    var addFriend = function(nama, npm) {
+    var token = document.getElementById("token").innerHTML;
+    var cid = document.getElementById("cid").innerHTML;
+    var addFriend = function(nama,npm,address,mail_code,hometown,birthday,program,angkatan) {
         $.ajax({
             method: "POST",
-            url: "{% url "lab-7:add-friend" %}",
-            data: { name: nama, npm: npm},
+            url: '{% url "lab-7:add-friend" %}',
+            data: { 
+                name: nama,
+                npm: npm,
+                address: address,
+                mail_code: mail_code,
+                hometown: hometown,
+                birthday: birthday,
+                program: program,
+                angkatan: angkatan,
+            },
             success : function (friend) {
                 html = '<a class="list-group-item clearfix">' +
                     friend.friend_name +
                     '</a>';
-                $("#friend-list").append(html)
+                $("#friend-list").append(html);
+                window.location.reload();
             },
             error : function (error) {
                 alert("Mahasiswa tersebut sudah ditambahkan sebagai teman")
@@ -71,19 +105,35 @@
         });
     };
 
-    $("#add-friend").on("submit", function () {
-       name = $("#field_name").val()
-       npm = $("#field_npm").val()
-        addFriend(name, npm)
+    $("#add-friend").on("submit", function (event) {
+        var npm = $("#field_npm").val();
+        var corsProxy = 'https://cors-anywhere.herokuapp.com/';
+        var obj = new Object(); obj.access_token = token; obj.client_id = cid;
+        var param = $.param(obj);
+        $.ajax({
+            method: "GET",
+            url: corsProxy+'https://api-dev.cs.ui.ac.id/siakngcs/mahasiswa/'+npm+'/?'+param,
+            success: function(data) {
+                addFriend(data.nama, data.npm, data.alamat_mhs,data.kd_pos_mhs,
+                          data.kota_lahir,data.tgl_lahir,
+                          data.program[0].nm_org,data.program[0].nm_prg)
+            },
+            error: function(error) {
+                console.log(error)
+                alert("\n\t\t\tNPM tidak valid:\n\n'Tidak ada mahasiswa dengan NPM tersebut'")
+            }
+        });
         event.preventDefault();
     });
+
+
 
     $("#field_npm").change(function () {
         console.log( $(this).val() );
         npm = $(this).val();
         $.ajax({
             method: "POST",
-            url: '{% url "lab-7:validate-npm" %}' ,
+            url: '{% url "lab-7:validate-npm" %}',
             data: {
                 'npm': npm
             },
@@ -96,6 +146,6 @@
             }
         });
     });
-
 </script>
+
 {% endblock %}
