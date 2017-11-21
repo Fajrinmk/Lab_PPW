@@ -159,7 +159,7 @@
           }
         });
       }
-  });
+    });
 
   };
 
@@ -169,15 +169,42 @@
     // yang sedang login dengan semua fields yang dibutuhkan di method render, dan memanggil fungsi callback
     // tersebut setelah selesai melakukan request dan meneruskan response yang didapat ke fungsi callback
     // tersebut
+    FB.getLoginStatus(function(response) {
+      if (response.status === 'connected') {
+        FB.api('/me/posts', 'GET', function(response){
+          console.log(response);
+          if (response && !response.error) {
+            /* handle the result */
+            fun(response);
+          }
+          else {
+            swal({
+              text: "Something went wrong",
+              icon: "error"
+            });
+          }
+        });
+      }
+    });
+
   };
 
   const postFeed = () => {
     // Todo: Implement method ini,
     // Pastikan method ini menerima parameter berupa string message dan melakukan Request POST ke Feed
     // Melalui API Facebook dengan message yang diterima dari parameter.
+    FB.api('/me/feed', 'POST', {message:message});
+    swal("Your post has been posted", {
+      icon: "success",
+    }).then((ok) => {
+      window.location.reload();
+    });
+
   };
 
   const postStatus = () => {
     const message = $('#postInput').val();
+    $('#postInput').val("");
     postFeed(message);
   };
+
