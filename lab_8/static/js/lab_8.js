@@ -100,7 +100,10 @@
       });
     } else {
       // Tampilan ketika belum login
-      $('#lab8').html('<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" onclick="facebookLogin()" data-use-continue-as="true"></div>');
+      $('#lab8').html('<div id="login-btn">' + 
+        '<button class="btn btn-primary btn-lg login" onclick="facebookLogin()">Login</button>' +
+      '</div>'
+);
     }
   };
 
@@ -137,11 +140,27 @@
   // meneruskan response yang didapat ke fungsi callback tersebut
   // Apakah yang dimaksud dengan fungsi callback?
   const getUserData = (fun) => {
-    FB.
-    FB.api('/me?fields=....', 'GET', function (response){
-      fun(response);
-    });
-    ...
+    FB.getLoginStatus(function(response) {
+      if (response.status === 'connected') {
+        FB.api('/me?fields=id,name,about,email,gender,cover,picture.width(168).height(168)', 'GET', function(response){
+          console.log(response);
+          if (response && !response.error) {
+            /* handle the result */
+            picture = response.picture.data.url;
+            name = response.name;
+            userID = response.id;
+            fun(response);
+          }
+          else {
+            swal({
+              text: "Something went wrong",
+              icon: "error"
+            });
+          }
+        });
+      }
+  });
+
   };
 
   const getUserFeed = (fun) => {
