@@ -24,6 +24,7 @@ import lab_4.urls as lab_4
 import lab_5.urls as lab_5
 import lab_6.urls as lab_6
 import lab_7.urls as lab_7
+import lab_8.urls as lab_8
 
 from lab_1.views import index as index_lab1
 

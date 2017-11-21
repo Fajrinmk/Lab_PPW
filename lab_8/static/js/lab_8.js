@@ -11,6 +11,22 @@
     // dan jalankanlah fungsi render di bawah, dengan parameter true jika
     // status login terkoneksi (connected)
 
+    FB.getLoginStatus(function(response) {
+      if (response.status === 'connected') {
+        // Logged into your app and Facebook.
+        render(true);
+      }
+      else if (response.status === 'not_authorized') {
+        //The person is not authorized
+        render(false);
+      }
+      else {
+        // The person is not logged into this app or we are unable to tell. 
+        render(false);
+      }
+  });
+
+
     // Hal ini dilakukan agar ketika web dibuka dan ternyata sudah login, maka secara
     // otomatis akan ditampilkan view sudah login
   };
@@ -84,7 +100,7 @@
       });
     } else {
       // Tampilan ketika belum login
-      $('#lab8').html('<button class="login" onclick="facebookLogin()">Login</button>');
+      $('#lab8').html('<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" onclick="facebookLogin()" data-use-continue-as="true"></div>');
     }
   };
 
@@ -93,12 +109,25 @@
     // Pastikan method memiliki callback yang akan memanggil fungsi render tampilan sudah login
     // ketika login sukses, serta juga fungsi ini memiliki segala permission yang dibutuhkan
     // pada scope yang ada. Anda dapat memodifikasi fungsi facebookLogin di atas.
+    FB.login(function(response){
+      console.log(response);
+      render(true);
+    }, {scope:'public_profile,user_posts,publish_actions,user_about_me,email'})
+
+
   };
 
   const facebookLogout = () => {
     // TODO: Implement Method Ini
     // Pastikan method memiliki callback yang akan memanggil fungsi render tampilan belum login
     // ketika logout sukses. Anda dapat memodifikasi fungsi facebookLogout di atas.
+    FB.getLoginStatus(function(response) {
+      if (response.status === 'connected') {
+        FB.logout();
+        render(false);
+      }
+    });
+
   };
 
   // TODO: Lengkapi Method Ini
@@ -108,7 +137,7 @@
   // meneruskan response yang didapat ke fungsi callback tersebut
   // Apakah yang dimaksud dengan fungsi callback?
   const getUserData = (fun) => {
-    ...
+    FB.
     FB.api('/me?fields=....', 'GET', function (response){
       fun(response);
     });
