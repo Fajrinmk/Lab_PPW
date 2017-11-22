@@ -13,8 +13,3 @@ class lab8UnitTest(TestCase):
     def test_lab8_using_index_func(self):
         found = resolve('/lab-8/')
         self.assertEqual(found.func, index)
-
-    def test_root_url_now_is_using_index_page_from_lab_8(self):
-        response = Client().get('/')
-        self.assertEqual(response.status_code, 301)
-        self.assertRedirects(response,'/lab-8/',301,200)
