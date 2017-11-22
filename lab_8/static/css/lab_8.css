@@ -1,4 +1,101 @@
-body {
-	background: #e9ebee;
-	margin-bottom: 100px;
+.body{
+    flex-wrap: wrap;
+}
+
+.intro{
+    margin-top: 10%;
+    margin-left: 30%;
+    margin-right: 30%;
+    font-family: 'Spectral SC', serif;
+    text-align: justify;
+}
+
+.intro h1{
+    font-size: 50px;
+    margin-left: 4%;
+}
+
+button#login-button{
+    margin-top: 20px;
+    margin-left: 20%;
+    background-color: #3B5999;
+    color: white;
+    width: 230px;
+    height: 70px;
+    font-size: 17px;
+}
+
+.cover{
+    margin-top: 1%;
+    margin-left: 15%;
+    height: 500px;
+    width: 1000px;
+}
+
+.picture{
+    margin-top: 50px;
+    margin-left: 200px;
+    width: 100px;
+    border-radius: 50%;
+}
+
+.data{
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.profile{
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 2px;
+}
+
+.post{
+    width: 75%;
+    margin-top: 10%;
+    margin-left: 10%;
+    line-height: 6.25;
+}
+
+.postStatus{
+    float: right;
+    margin-right: 15%;
+}
+
+.feeds{
+    margin-left:15%;
+    margin-top: 10%;
+}
+
+.p-2{
+    margin-top:50px;
+    margin-left:15%;
+    margin-right:15%;
+    height: 200px+50px;
+    background: #00c6ff; 
+    background: -webkit-linear-gradient(to left, #00c6ff, #0072ff); 
+    background: linear-gradient(to left, #00c6ff, #0072ff); 
+    color: white;
+    font-family: 'Merriweather Sans', sans-serif;;
+    font-weight: 3px;
+    padding-bottom: 20px;
+    font-size: 25px;
+    word-break: keep-all;
+}
+
+.delete{
+   opacity: 0;
+}
+
+.delete:hover{
+    opacity: 1;
+}
+
+
+@media only screen and (max-width:756px){
+    .cover{
+        margin-top: 1%;
+        margin-left: 0;
+        height: 275px;
+        width: 375px;
+    }
 }

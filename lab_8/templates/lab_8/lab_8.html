@@ -1,7 +1,10 @@
 {% extends "lab_8/layout/base.html" %}
+{% load staticfiles %}
+
 {% block content %}
-<section name="postFeed" id="postFeed">
-    <div class="container" id="lab8">
+    <div id="lab8">
+        <div class="intro">
+            <button type="button" id="login-button" class="btn"><img class="logo" src="{% static 'assets/fb_logo.png' %}" style="width:25px;margin-right:5px;"/>Login with Facebook</button>
+        </div>
     </div>
-</section>
 {% endblock %}

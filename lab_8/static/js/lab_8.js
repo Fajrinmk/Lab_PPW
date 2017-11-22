@@ -11,27 +11,18 @@
     // dan jalankanlah fungsi render di bawah, dengan parameter true jika
     // status login terkoneksi (connected)
 
-    FB.getLoginStatus(function(response) {
-      if (response.status === 'connected') {
-        // Logged into your app and Facebook.
-        render(true);
-      }
-      else if (response.status === 'not_authorized') {
-        //The person is not authorized
-        render(false);
-      }
-      else {
-        // The person is not logged into this app or we are unable to tell. 
-        render(false);
-      }
-  });
+    FB.getLoginStatus(function(response){
+        if(response.status == 'connected'){
+          render(true);
+        }else if(response.status == 'not_authorized'){
+          facebookLogin();
+        }else{
+          facebookLogin();  
+        }
+    })
 
-
-    // Hal ini dilakukan agar ketika web dibuka dan ternyata sudah login, maka secara
-    // otomatis akan ditampilkan view sudah login
   };
 
-  // Call init facebook. default dari facebook
   (function(d, s, id){
      var js, fjs = d.getElementsByTagName(s)[0];
      if (d.getElementById(id)) {return;}
@@ -40,58 +31,99 @@
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
 
-  // Fungsi Render, menerima parameter loginFlag yang menentukan apakah harus
-  // merender atau membuat tampilan html untuk yang sudah login atau belum
-  // Ubah metode ini seperlunya jika kalian perlu mengganti tampilan dengan memberi
-  // Class-Class Bootstrap atau CSS yang anda implementasi sendiri
   const render = loginFlag => {
     if (loginFlag) {
-      // Jika yang akan dirender adalah tampilan sudah login
-
-      // Memanggil method getUserData (lihat ke bawah) yang Anda implementasi dengan fungsi callback
-      // yang menerima object user sebagai parameter.
-      // Object user ini merupakan object hasil response dari pemanggilan API Facebook.
+      $('nav').html(
+        '<nav class="navbar navbar-toggleable-md navbar-inverse" style="background-color:#3B5999;">'+
+          '<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">'+
+            '<span class="navbar-toggler-icon"></span>'+
+          '</button>'+
+          '<a class="navbar-brand" href="#">Pesbuk</a>'+
+          '<div class="collapse navbar-collapse" id="navbarNavDropdown">'+
+            '<ul class="navbar-nav">'+
+              '<li class="nav-item active">'+
+                '<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>'+
+              '</li>'+
+            '</ul>'+
+            '<ul class="navbar-nav mr-auto">'+
+              '<li class="nav-item">'+
+                '<a class="nav-link" id="logout" onclick="facebookLogout()"> Logout <span class="sr-only">(current)</span></a>'+
+              '</li>'+
+            '</ul>'+
+          '</div>'+
+        '</nav>'
+      )
       getUserData(user => {
-        // Render tampilan profil, form input post, tombol post status, dan tombol logout
-        $('#lab8').html(
+        $('div#lab8').html(
           '<div class="profile">' +
             '<img class="cover" src="' + user.cover.source + '" alt="cover" />' +
-            '<img class="picture" src="' + user.picture.data.url + '" alt="profpic" />' +
             '<div class="data">' +
-              '<h1>' + user.name + '</h1>' +
-              '<h2>' + user.about + '</h2>' +
-              '<h3>' + user.email + ' - ' + user.gender + '</h3>' +
+              '<table class="table ">'+
+                '<thead>'+
+                  '<tr>'+
+                    '<td><img class="picture" src="'   + user.picture.data.url + '" alt="profpic" /></td>'+
+                    '<th colspan="2"><h1>' + user.name + '</h1></th>' +
+                  '</tr>'+
+                '</thead>'+
+                '<tbody>'+
+                  '<tr>'+
+                    '<td><h2> About Me </h2></td>'+ 
+                    '<td><h2>' + user.about + '</h2></td>'+ 
+                  '</tr>'+
+                  '<tr>'+
+                    '<td><h3> Birthday </h3></td>' +
+                    '<td><h3>' + user.birthday + '</h3></td>' +
+                  '</tr>'+
+                  '<tr>'+
+                    '<td><h3> Email </h3></td>' +
+                    '<td><h3>' + user.email + '</h3></td>' +
+                  '</tr>'+
+                  '<tr>'+
+                  '<td><h3> Gender </h3></td>' +
+                  '<td><h3>' + user.gender + '</h3></td>' +
+                '</tr>'+
+                '</tbody>'+
+              '</table>'+
             '</div>' +
           '</div>' +
-          '<input id="postInput" type="text" class="post" placeholder="Ketik Status Anda" />' +
-          '<button class="postStatus" onclick="postStatus()">Post ke Facebook</button>' +
-          '<button class="logout" onclick="facebookLogout()">Logout</button>'
+          '<input type="text" class="form-control form-control-lg post" id="postInput" placeholder="Whats on your mind,'+ user.first_name +'?">'+
+          '<button class="btn btn-primary postStatus" onclick="postStatus()">Post to Facebook</button>'+
+          '<div class="feeds">'+
+            '<h1>News Feed</h1>'+
+          '</div>'+
+          '<div class="d-flex flex-xl-column">'
         );
 
-        // Setelah merender tampilan di atas, dapatkan data home feed dari akun yang login
-        // dengan memanggil method getUserFeed yang kalian implementasi sendiri.
-        // Method itu harus menerima parameter berupa fungsi callback, dimana fungsi callback
-        // ini akan menerima parameter object feed yang merupakan response dari pemanggilan API Facebook
         getUserFeed(feed => {
           feed.data.map(value => {
-            // Render feed, kustomisasi sesuai kebutuhan.
             if (value.message && value.story) {
-              $('#lab8').append(
-                '<div class="feed">' +
-                  '<h1>' + value.message + '</h1>' +
-                  '<h2>' + value.story + '</h2>' +
-                '</div>'
+              $('div#lab8').append(
+                '<div class="p-2">' +
+                    '<table class="table">'+
+                      '<tr>'+
+                          '<p>' + value.message + '</p>' +
+                          '<p>' + value.story + '</p>' +
+                          '<button class="btn btn-danger delete" onclick="deleteStatus(\''+ value.id + '\') ">Delete</button>'+
+                        '</tr>'+
+                    '</table>'+
+                 '</div>'
               );
             } else if (value.message) {
-              $('#lab8').append(
-                '<div class="feed">' +
-                  '<h1>' + value.message + '</h1>' +
+              $('div#lab8').append(
+                '<div class="p-2">' +
+                    '<table class="table">'+
+                      '<tr>'+
+                          '<p>' + value.message + '</p>' +
+                          '<button class="btn btn-danger delete" onclick="deleteStatus(\''+ value.id + '\') ">Delete</button>'+
+                        '</tr>'+
+                    '</table>'+
                 '</div>'
               );
             } else if (value.story) {
-              $('#lab8').append(
-                '<div class="feed">' +
-                  '<h2>' + value.story + '</h2>' +
+              $('div#lab8').append(
+                '<div class="p-2">' +
+                  '<p>' + value.story + '</p>' +
+                  '<button class="btn btn-danger delete" onclick="deleteStatus(\''+ value.id + '\')">Delete</button>'+
                 '</div>'
               );
             }
@@ -99,112 +131,96 @@
         });
       });
     } else {
-      // Tampilan ketika belum login
-      $('#lab8').html('<div id="login-btn">' + 
-        '<button class="btn btn-primary btn-lg login" onclick="facebookLogin()">Login</button>' +
-      '</div>'
-);
+      $('div#lab8').html('');
     }
   };
 
   const facebookLogin = () => {
-    // TODO: Implement Method Ini
-    // Pastikan method memiliki callback yang akan memanggil fungsi render tampilan sudah login
-    // ketika login sukses, serta juga fungsi ini memiliki segala permission yang dibutuhkan
-    // pada scope yang ada. Anda dapat memodifikasi fungsi facebookLogin di atas.
-    FB.login(function(response){
-      console.log(response);
-      render(true);
-    }, {scope:'public_profile,user_posts,publish_actions,user_about_me,email'})
-
-
+    FB.login(function(response) {
+        if (response.authResponse) {
+         console.log('Welcome!  Fetching your information.... ');
+         render(false);
+         render(true);
+        } else {
+         console.log('User cancelled login or did not fully authorize.');
+        }
+    },
+      {scope : 'public_profile,email,user_about_me,user_birthday,user_posts,publish_actions'},
+      {auth_type : 'reauthenticate'} 
+    );
   };
+
+  $('#login-button').click(facebookLogin);
 
   const facebookLogout = () => {
-    // TODO: Implement Method Ini
-    // Pastikan method memiliki callback yang akan memanggil fungsi render tampilan belum login
-    // ketika logout sukses. Anda dapat memodifikasi fungsi facebookLogout di atas.
-    FB.getLoginStatus(function(response) {
-      if (response.status === 'connected') {
-        FB.logout();
-        render(false);
-      }
-    });
-
+    FB.logout(function(response) {
+          document.location.reload();
+      });
   };
-
-  // TODO: Lengkapi Method Ini
-  // Method ini memodifikasi method getUserData di atas yang menerima fungsi callback bernama fun
-  // lalu merequest data user dari akun yang sedang login dengan semua fields yang dibutuhkan di 
-  // method render, dan memanggil fungsi callback tersebut setelah selesai melakukan request dan 
-  // meneruskan response yang didapat ke fungsi callback tersebut
-  // Apakah yang dimaksud dengan fungsi callback?
+  
   const getUserData = (fun) => {
     FB.getLoginStatus(function(response) {
-      if (response.status === 'connected') {
-        FB.api('/me?fields=id,name,about,email,gender,cover,picture.width(168).height(168)', 'GET', function(response){
-          console.log(response);
-          if (response && !response.error) {
-            /* handle the result */
-            picture = response.picture.data.url;
-            name = response.name;
-            userID = response.id;
-            fun(response);
-          }
-          else {
-            swal({
-              text: "Something went wrong",
-              icon: "error"
-            });
-          }
-        });
-      }
-    });
-
-  };
+        if (response.status === 'connected') {
+          FB.api(
+                '/me',
+                {fields :'cover,picture,name,about,birthday,email,gender,first_name'},
+                'GET',
+                function(response){
+                    console.log(response);
+                    fun(response); 
+                });
+            }
+         });
+    };
 
   const getUserFeed = (fun) => {
-    // TODO: Implement Method Ini
-    // Pastikan method ini menerima parameter berupa fungsi callback, lalu merequest data Home Feed dari akun
-    // yang sedang login dengan semua fields yang dibutuhkan di method render, dan memanggil fungsi callback
-    // tersebut setelah selesai melakukan request dan meneruskan response yang didapat ke fungsi callback
-    // tersebut
-    FB.getLoginStatus(function(response) {
-      if (response.status === 'connected') {
-        FB.api('/me/posts', 'GET', function(response){
-          console.log(response);
-          if (response && !response.error) {
-            /* handle the result */
-            fun(response);
-          }
-          else {
-            swal({
-              text: "Something went wrong",
-              icon: "error"
-            });
-          }
+    FB.getLoginStatus(function(response){
+        if(response.status === 'connected'){
+            FB.api(
+                "/me/feed",
+                function (response) {
+                    if (response && !response.error) {
+                        console.log(response);
+                        fun(response);
+                    }
+                });
+            }
         });
-      }
-    });
+    };
 
-  };
-
-  const postFeed = () => {
-    // Todo: Implement method ini,
-    // Pastikan method ini menerima parameter berupa string message dan melakukan Request POST ke Feed
-    // Melalui API Facebook dengan message yang diterima dari parameter.
-    FB.api('/me/feed', 'POST', {message:message});
-    swal("Your post has been posted", {
-      icon: "success",
-    }).then((ok) => {
-      window.location.reload();
-    });
-
+  const postFeed = (message) => {
+    FB.api(
+        "/me/feed",
+        "POST",
+        {
+            "message": message
+        },
+        function (response) {
+          if (response && !response.error) {
+              console.log('POST ID: ' + response.id);
+              render(false);
+              render(true);
+          }else{
+              alert('Error occured');
+          }
+        }
+    );
   };
 
   const postStatus = () => {
     const message = $('#postInput').val();
-    $('#postInput').val("");
     postFeed(message);
   };
 
+  const deleteStatus = (id) => {
+    var postId = id;
+    FB.api(postId, 'delete', function(response) {
+      if (!response || response.error) {
+        alert('Error occured');
+      } else {
+        alert('Post was deleted');
+        render(false);
+        render(true);
+      }
+    });
+  }
