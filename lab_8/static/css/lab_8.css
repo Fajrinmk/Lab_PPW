@@ -71,9 +71,7 @@ button#login-button{
     margin-left:15%;
     margin-right:15%;
     height: 200px+50px;
-    background: #00c6ff; 
-    background: -webkit-linear-gradient(to left, #00c6ff, #0072ff); 
-    background: linear-gradient(to left, #00c6ff, #0072ff); 
+    background: #3B5999; 
     color: white;
     font-family: 'Merriweather Sans', sans-serif;;
     font-weight: 3px;
