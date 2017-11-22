@@ -81,15 +81,16 @@ button#login-button{
 }
 
 .delete{
-   opacity: 0;
+   color: white;
+
 }
 
 .delete:hover{
-    opacity: 1;
+    color: red;
 }
 
-#logoutButton{
-    float: right;
+#navbarNavDropdown{
+    
 }
 
 
