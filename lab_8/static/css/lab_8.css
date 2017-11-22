@@ -88,6 +88,10 @@ button#login-button{
     opacity: 1;
 }
 
+#logoutButton{
+    float: right;
+}
+
 
 @media only screen and (max-width:756px){
     .cover{

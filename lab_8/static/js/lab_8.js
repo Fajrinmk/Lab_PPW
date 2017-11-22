@@ -45,7 +45,7 @@
                 '<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>'+
               '</li>'+
             '</ul>'+
-            '<ul class="navbar-nav mr-auto">'+
+            '<ul class="navbar-nav mr-auto" id="logoutButton">'+
               '<li class="nav-item">'+
                 '<a class="nav-link" id="logout" onclick="facebookLogout()"> Logout <span class="sr-only">(current)</span></a>'+
               '</li>'+
