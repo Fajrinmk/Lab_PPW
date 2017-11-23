@@ -29,11 +29,7 @@ class lab7UnitTest(TestCase):
 		response = Client().get('/lab-7/get-friend-list/')
 		self.assertEqual(response.status_code, 200)
 
-	def test_friend_description_url_is_exist(self):
-		friend = Friend.objects.create(friend_name="Pina Korata", npm="1606123456")
-		response = Client().post('/lab-7/friend-list/info/' + str(friend.npm) + '/')
-		self.assertEqual(response.status_code, 200)
-
+	
 	def test_auth_param_dict(self):
 		csui_helper = CSUIhelper()
 		auth_param = csui_helper.instance.get_auth_param_dict()
@@ -53,13 +49,7 @@ class lab7UnitTest(TestCase):
 		)
 		self.assertEqual(response_post.status_code, 200)
 
-	def test_invalid_sso_raise_exception(self):
-		username = "root"
-		password = "admin"
-		csui_helper = CSUIhelper()
-		with self.assertRaises(Exception) as context:
-			csui_helper.instance.get_access_token(username, password)
-		self.assertIn("root", str(context.exception))
+	
 
 	def test_validate_npm(self):
 		response = self.client.post('/lab-7/validate-npm/')
@@ -67,11 +57,6 @@ class lab7UnitTest(TestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertJSONEqual(html_response, {'is_taken':False})
 
-	def test_delete_friend(self):
-		friend = Friend.objects.create(friend_name="Pina Korata", npm="1606123456")
-		response = Client().post('/lab-7/friend-list/delete-friend/' + str(friend.npm) + '/')
-		self.assertEqual(response.status_code, 302)
-		self.assertNotIn(friend, Friend.objects.all())
 
 	def test_invalid_page_pagination_number(self):
 		data = ["asik", "hehe", "seru", "asik", "hehe", "seru", "asik", "hehe", "seru", "asik",
