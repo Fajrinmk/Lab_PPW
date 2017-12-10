@@ -27,10 +27,7 @@
 </head>
 <body>
 <header>
-    <h1 style="text-align:center">
-        <small><em> Change This With Your Custom Header </em></small>
-    </h1>
-    <!-- Your Header Here -->
+     {% include "lab_9/partials/header.html" %}
 </header>
 <content>
     <div class="container">
@@ -49,14 +46,7 @@
     </div>
 </content>
 <footer>
-    <hr>
-    {% block footer %}
-
-    <h1 style="text-align:center">
-        <small><em> Change This With Your Custom Footer </em></small>
-    </h1>
-    <!-- Your Footer Here -->
-    {% endblock %}
+    {% include "lab_9/partials/footer.html" %}
 </footer>
 
 <!-- Jquery n Bootstrap Script -->
